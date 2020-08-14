@@ -1,7 +1,12 @@
-# list
-## list对于空间的运用有绝对的精准，一点也不浪费；对于任何位置的元素插入或元素移除，list永远是常数时间。
-## list的节点
-```c++
+//
+// Created  on 2020/8/14.
+//
+#include "../3_iterators_and_traits/my_iterator.h"
+
+#ifndef STUDY_STL_MY_LIST_H
+#define STUDY_STL_MY_LIST_H
+
+#endif //STUDY_STL_MY_LIST_H
 template<typename T>
 struct __list_node{
     typedef void* void_pointer;
@@ -9,16 +14,13 @@ struct __list_node{
     void_pointer next;
     T data;
 };
-```
-## list的迭代器
-#### list的插入操作和接和操作都不会造成原有的list的迭代器失效。这在vector是不成立的。list的删除操作也只有“指向被删除元素”的迭代器失效，不影响其他迭代器。
-```c++
+
 template <typename T,typename Ref,typename Ptr>
 struct __list_iterator{
     typedef __list_iterator<T,T&,T*>  iterator;
     typedef __list_iterator<T,Ref,Ptr> self;
-    // list 的迭代器是双向的
-    typedef bidirectional_iterator_tag iterator_category; 
+
+    typedef bidirectional_iterator_tag iterator_category; // list 的迭代器是双向的
     typedef T value_type;
     typedef Ptr pointer;
     typedef Ref reference;
@@ -30,7 +32,7 @@ struct __list_iterator{
     //constructor
     __list_iterator(){}
     __list_iterator(link_type x):node(x){}
-    __list_iterator(const iterator& x) :node(x.node){}
+    //__list_iterator(const iterator& x) :node(x.node){}
 
     bool operator==(const self& x){return node==x.node;}
     bool operator!= (const self& x) {return node!=x.node;}
@@ -60,4 +62,3 @@ struct __list_iterator{
         return temp;
     }
 };
-```
