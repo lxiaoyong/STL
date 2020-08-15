@@ -11,7 +11,7 @@ struct __list_node{
 };
 ```
 ## list的迭代器
-#### list的插入操作和接和操作都不会造成原有的list的迭代器失效。这在vector是不成立的。list的删除操作也只有“指向被删除元素”的迭代器失效，不影响其他迭代器。
+### list的插入操作和接和操作都不会造成原有的list的迭代器失效。这在vector是不成立的。list的删除操作也只有“指向被删除元素”的迭代器失效，不影响其他迭代器。
 ```c++
 template <typename T,typename Ref,typename Ptr>
 struct __list_iterator{
@@ -58,6 +58,45 @@ struct __list_iterator{
         self temp=*this;
         --*this;
         return temp;
+    }
+};
+```
+## list 的数据结构
+### SGI list 是一个环状双向链表，node是空节点,node->next指向首个节点,node->prev指向最后一个节点。
+```c++
+template<typename T,typename Alloc/*=alloc*/>
+class list{
+protected:
+    typedef __list_node<T> list_node;
+public:
+    typedef list_node* link_type;
+    typedef link_type iterator;
+    typedef size_t size_type;
+    typedef list_node& reference;
+protected:
+    link_type node;
+    // ...
+public:
+    // SGI list 是一个环状双向链表，node是空节点,node->next指向首个节点,node->prev指向最后一个节点
+    iterator begin(){
+        return (link_type)((*node).next);
+    }
+    iterator end(){
+        return node;
+    }
+    bool empty(){
+        return node->next==node;
+    }
+    size_type size() const{
+        size_type result=0;
+        distance(begin(),end(),result);
+        return result;
+    }
+    reference front(){
+        return *begin();
+    }
+    reference back(){
+        return *(--end());
     }
 };
 ```
